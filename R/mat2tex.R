@@ -6,7 +6,8 @@
 #' @title Tools to combine R and LaTeX code for use with knitr or sweave
 #' @keywords package
 #' @author Mark Heckmann \email{heckmann@@uni-bremen.de}
-#' @references
-#'    \url{http://ryouready.wordpress.com}
+#' @references 
+#'  For an introduction visit \url{http://markheckmann.github.io/mat2tex/}.
+#'  
 NULL
 

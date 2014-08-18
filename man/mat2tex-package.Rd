@@ -11,7 +11,7 @@ Easily create LaTeX equations with R matrices for .Rnw files
 Mark Heckmann \email{heckmann@uni-bremen.de}
 }
 \references{
-\url{http://ryouready.wordpress.com}
+For an introduction visit \url{http://markheckmann.github.io/mat2tex/}.
 }
 \keyword{package}
 
