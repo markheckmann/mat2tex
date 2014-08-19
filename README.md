@@ -3,7 +3,7 @@
 Inject R matrices into LaTeX formulas
 =======================================
 
-The **mat2tex** package was written to facilitate the combination of matrices and $\LaTeX$ code.
+The **mat2tex** package was written to facilitate the combination of matrices and LaTeX code.
 
 ### Installation
 
