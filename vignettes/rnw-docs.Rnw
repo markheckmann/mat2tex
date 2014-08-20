@@ -1,0 +1,84 @@
+
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{Inject R matrices into LaTeX formulas}
+
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{color}
+\usepackage[urlcolor=blue, colorlinks=true, pdfborder={0 0 0}]{hyperref}
+
+\title{\texttt{mat2tex} R package \linebreak \linebreak 
+        \normalsize{Version 0.1} \linebreak \linebreak 
+        \url{https://github.com/markheckmann/mat2tex}}
+\author{Mark Heckmann}
+\date{\today}
+
+\parindent0mm
+
+\begin{document}
+ 
+\maketitle
+
+
+
+To use \verb+mat2tex+ within \LaTeX documents you need to load the package first.
+
+<<>>=
+library(mat2tex)
+@
+
+It is recommended to add \verb+\usepackage{amsmath}+ in the document preamble. Otherwise not all math environments  \verb+mat2tex+ includes can be used. Now we can start. Let's create the matrix $A$.
+
+<<>>=
+set.seed(1)
+A <- matrix(runif(4), 2)
+@
+
+To display the matrix wrap the folling code in \verb+knitr+ chunk with the  arguments \verb+echo=FALSE+ and \verb+results='asis'+. The following code concatenates the \verb+texcode+ chunks using the \verb+%_%+ operator. 
+The first chunk adds the math environment \verb+$$+ as a string. The second converts the matrix $A$ into \LaTeX code. The last one closes the \verb+$$+ environment again.
+
+<<echo=TRUE, results='asis'>>=
+"$$" %_% xm(A) %_% "$$"
+@
+
+You may use the \verb+xx+ function to get the same results. 
+
+<<echo=TRUE, results='asis'>>=
+xx(A)
+@
+
+Here also, the shorthand \verb+$$+ environment is used which is the default in \verb+mat2tex+ as it is the standard for RMarkdown files. Working with \verb+.Rnw+ files it is conventient to change the default settings to the \verb+\equation+ environment to get numerated equations instead by typing
+
+<<>>=
+mat2tex_options(mathenvir=3)
+@
+
+Now we get numbered equations as the default.
+
+<<echo=TRUE, results='asis'>>=
+xx(A)
+@
+
+To reference Equation \eqref{mylabel} you may also add a label using the \verb+label+ argument. So you can reference it using \verb+\eqref{mylabel}+ or \verb+\ref{mylabel}+ in your \verb+.Rnw+ document.
+
+<<echo=TRUE, results='asis'>>=
+xx(A, label="mylabel")
+@
+
+Let's create one final example. We want to display the values of the singular value decomposition of $A$. This time we want to use square brackets and display three digits. To achieve this set the default matrix type to \verb+bmatrix+ (the default is \verb+pmatrix+) and to \verb+digits=3+.
+
+<<>>=
+mat2tex_options(mtype="bmatrix", digits=3)
+@
+
+We will use the function \verb+xmt+ which is the same as \verb+xm+ except that it additionally adds a transpose sign to the matrix.
+
+<<results='asis'>>=
+d <- svd(A)
+xx("A = UDV^T =", d$u, diag(d$d), xmt(d$v))
+@
+
+To find more examples and get more information have a look at the other package vignettes or visit \url{https://github.com/markheckmann/mat2tex}.
+
+\end{document}
