@@ -3,11 +3,21 @@
 \alias{xx}
 \title{Concatenate \code{texcode} chunks.}
 \usage{
-xx(..., e = 1, label = NULL)
+xx(..., e = NA, label = NULL)
 }
 \arguments{
 \item{...}{\code{texcode} objects or objects that can ce converted
-into texcode objects.}
+into texcode objects. Enter any number of chunks
+seperated by commas.}
+
+\item{e}{LaTeX math environment to use. If \code{NA} the default
+is used as defined in \code{mat2tex_options()$mathenv}.
+If set to \code{NULL}, no environment is added, just the plain
+math code is returned.}
+
+\item{label}{A label for the equation in case an environment is used
+that supports labels, e.g. \code{equation}.
+Only applicable to \code{Rnw} documents.}
 }
 \value{
 Object of class \code{texcode}.

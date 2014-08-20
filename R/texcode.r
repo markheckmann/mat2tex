@@ -148,16 +148,28 @@ check_for_math_envir <- function() {
 
 
 #' Concatenate \code{texcode} chunks.
+#' 
 #' @param   ... \code{texcode} objects or objects that can ce converted
-#'              into texcode objects.
+#'              into texcode objects. Enter any number of chunks 
+#'              seperated by commas.
+#' @param e LaTeX math environment to use. If \code{NA} the default 
+#'          is used as defined in \code{mat2tex_options()$mathenv}.
+#'          If set to \code{NULL}, no environment is added, just the plain
+#'          math code is returned.
+#' @param label A label for the equation in case an environment is used 
+#'          that supports labels, e.g. \code{equation}. 
+#'          Only applicable to \code{Rnw} documents.
 #' @return  Object of class \code{texcode}.
 #' @author  Mark Heckmann
 #' @export
 #'
-xx <- function(..., e=1, label=NULL) {
+xx <- function(..., e=NA, label=NULL) {
+  # get default mathenvir
+  if (is.na(e))
+    e <- mat2tex_options()$mathenv
   dots <- list(...)
   texcodes <- Reduce("%_%", dots) 
-  if (!is.na(e)) 
+  if (!is.null(e)) 
     texcodes <- wrap_in_math_envir(texcodes, e = e, label=label) 
   texcodes
 }
