@@ -2,27 +2,72 @@
 %\VignetteEngine{knitr::knitr}
 %\VignetteIndexEntry{Use mat2tex with knitr and .Rnw files}
 
-\documentclass{article}
+\documentclass[article,nojss]{jss}
 
 \usepackage{amsmath}
 \usepackage{color}
-\usepackage[urlcolor=blue, colorlinks=true, pdfborder={0 0 0}]{hyperref}
+%\usepackage[urlcolor=blue, colorlinks=true, pdfborder={0 0 0}]{hyperref}
 
-\title{\texttt{mat2tex} R package \linebreak \linebreak 
-        \normalsize{Version 0.1} \linebreak \linebreak 
-        \url{https://github.com/markheckmann/mat2tex}}
-\author{Mark Heckmann}
-\date{\today}
+% \title{\texttt{mat2tex} R package \linebreak \linebreak 
+%         \normalsize{Version 0.1} \linebreak \linebreak 
+%         \url{https://github.com/markheckmann/mat2tex}}
+% \author{Mark Heckmann}
+% \date{\today}
 
 \parindent0mm
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\newcommand{\di}{\textbf{\textsf{diagram}}\xspace}
+
+\title{\proglang{R} Package \pkg{mat2tex}: Easily inject R matrices in \LaTeX{} math equations}
+
+\Plaintitle{R Package mat2tex: Easily inject R matrices in LaTeX math equations}
+
+\Keywords{matrix, knitr, R}
+
+\Plainkeywords{matrix, knitr, R}
+
+
+\author{Mark Heckmann\\
+University of Bremen, Germany \\
+\normalsize{Version 0.1} \\ 
+\url{https://github.com/markheckmann/mat2tex}
+}
+
+\Plainauthor{Mark Heckmann}
+
+\Abstract{This document describes how to use the \pkg{mat2tex} package.
+The mat2tex package was written to facilitate the combination of matrices and \LaTeX{} code.
+\pkg{mat2tex} is a mini-language with several operators and functions to allow to combine \LaTeX{} math equation code and R objects, especially matrices, very easily. 
+}
+
+%% The address of (at least) one author should be given
+%% in the following format:
+\Address{
+  Mark Heckmann\\
+  University of Bremen, Germany\\
+  E-mail: \email{heckmann@uni-bremen.de}\\
+  R-blog: \url{http://ryouready.wordpress.com}\\
+  Website: \url{http://www.markheckmann.de}\\
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
 \begin{document}
  
 \maketitle
 
+To use \verb+mat2tex+ within \LaTeX documents install 
 
+<<eval=FALSE>>=
+library(devtools)
+install_github("mat2tex", "markheckmann")
+@
 
-To use \verb+mat2tex+ within \LaTeX documents you need to load the package first.
+and load the \pkg{mat2tex} package.
 
 <<>>=
 library(mat2tex)
