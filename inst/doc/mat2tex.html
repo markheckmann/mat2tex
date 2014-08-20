@@ -86,19 +86,14 @@ A =
 \]</span></p>
 <p>Using <strong>mat2tex</strong> you can achieve this very easily, by inserting the following code into a <code>knitr</code> chunk with the options <code>echo=FALSE</code> and <code>results='asis'</code></p>
 <pre class="r"><code>&quot;$$ A = &quot; %_% A %_% &quot;$$&quot;</code></pre>
-<p><span class="math">\[ A =  \begin{pmatrix}
- 0.27 &amp; 0.57 \\ 
- 0.37 &amp; 0.91 \\ 
- \end{pmatrix}
+<p><span class="math">\[ A =  \begin{bmatrix}
+ 0.266 &amp; 0.573 \\ 
+ 0.372 &amp; 0.908 \\ 
+ \end{bmatrix}
  \]</span></p>
 <p>which is equivalent to</p>
 <pre class="r"><code>xx(&quot;A =&quot;, A)</code></pre>
-<p><span class="math">\[
- A = \begin{pmatrix}
- 0.27 &amp; 0.57 \\ 
- 0.37 &amp; 0.91 \\ 
- \end{pmatrix}
- \]</span></p>
+
 <p>In the example above we used a string containing plain LaTeX code <code>&quot;$$ \\mathbf{A} = &quot;</code> and concatated it with the matrix <code>A</code> and another plain LaTeX chunk using the <code>%_%</code> operator. The operator can be used to concatenate chunks. Alternatively, you can use the <code>xx</code> function which will concatenate all the chunks given as arguments and seperated by comma automatically. The math environment we added by hand above (<code>$$</code>) is added automatically here.</p>
 </div>
 <div id="creating-chunks-using-functions-and-operators" class="section level3">
@@ -174,84 +169,54 @@ A =
 <p>The following codes begins a new math environment (<code>xb()</code>) and ends it again (<code>xb()</code>). The <code>e</code> argument specifies the type of environment we want. In the case we use the <code>$$</code> environment (<code>e=1</code>), which is the default. Inside we use the function <code>xm</code> to convert the matrix <code>A</code> into LaTeX codem in this case with <code>3</code> digits.</p>
 <pre class="r"><code>xb(e=1) %_% xm(A, digits=3) %_% xe(e=1)</code></pre>
 <p><span class="math">\[
- \begin{pmatrix}
+ \begin{bmatrix}
  0.266 &amp; 0.573 \\ 
  0.372 &amp; 0.908 \\ 
- \end{pmatrix}
+ \end{bmatrix}
  \]</span></p>
 <p>The following code is identical to the one above, using plain text to specify the type of math environment. In order to convert the text into a chunk that can be concatenated, the function <code>xc</code> is used.</p>
 <pre class="r"><code>xc(&quot;$$&quot;) %_% xm(A, 3) %_% xc(&quot;$$&quot;)</code></pre>
-<p><span class="math">\[ \begin{pmatrix}
+<p><span class="math">\[ \begin{bmatrix}
  0.266 &amp; 0.573 \\ 
  0.372 &amp; 0.908 \\ 
- \end{pmatrix}
+ \end{bmatrix}
  \]</span></p>
 <p>In most cases you can simply omit the <code>xc</code> function when using the <code>%_%</code> operator. The chunks are then automatically converted. The following code is identical to the one before.</p>
 <pre class="r"><code>&quot;$$&quot; %_% xm(A, 2) %_% &quot;$$&quot;</code></pre>
-<p><span class="math">\[ \begin{pmatrix}
- 0.27 &amp; 0.57 \\ 
- 0.37 &amp; 0.91 \\ 
- \end{pmatrix}
- \]</span></p>
-<p>You can even omit the <code>xm</code> function. To convert the matrix into a LaTex code chunk the function <code>xm</code> is invoked. As no arguments are specified in this case, the default values (see section <strong>defaults</strong>) are used.</p>
-<pre class="r"><code>&quot;$$&quot; %_% A %_% &quot;$$&quot;</code></pre>
-<p><span class="math">\[ \begin{pmatrix}
- 0.27 &amp; 0.57 \\ 
- 0.37 &amp; 0.91 \\ 
- \end{pmatrix}
- \]</span></p>
-<p>An alternative formulation which is equivalent is to use the <code>xx</code> function to concatenate the code chunks. This function allows to enter the chunks seperated by commas. The nice feature is, that it automatically adds a math environment specified via the argument <code>e</code>.</p>
-<pre class="r"><code>xx(xm(A, 2), e=1)</code></pre>
-<p><span class="math">\[
- \begin{pmatrix}
- 0.27 &amp; 0.57 \\ 
- 0.37 &amp; 0.91 \\ 
- \end{pmatrix}
- \]</span></p>
-<p>As <code>e=1</code> and <code>digits=2</code> is the default anyway, we can reduce this to</p>
-<pre class="r"><code>xx(A)</code></pre>
-<p><span class="math">\[
- \begin{pmatrix}
- 0.27 &amp; 0.57 \\ 
- 0.37 &amp; 0.91 \\ 
- \end{pmatrix}
- \]</span></p>
-<p>Let’s explore more arguments. We can change the type of brackets that are produced using the <code>mtype</code> argument.</p>
-<pre class="r"><code>&quot;$$&quot; %_% xm(A, mtype = &quot;b&quot;) %_% &quot;$$&quot;</code></pre>
 <p><span class="math">\[ \begin{bmatrix}
  0.27 &amp; 0.57 \\ 
  0.37 &amp; 0.91 \\ 
  \end{bmatrix}
  \]</span></p>
-<p>The available bracket types (this time using the <code>xx</code> function) are</p>
-<pre class="r"><code>xx( xm(A, m=&quot;m&quot;), xm(A, m=&quot;p&quot;), xm(A, m=&quot;b&quot;), 
-    xm(A, m=&quot;B&quot;), xm(A, m=&quot;v&quot;), xm(A, m=&quot;V&quot;))   </code></pre>
+<p>You can even omit the <code>xm</code> function. To convert the matrix into a LaTex code chunk the function <code>xm</code> is invoked. As no arguments are specified in this case, the default values (see section <strong>defaults</strong>) are used.</p>
+<pre class="r"><code>&quot;$$&quot; %_% A %_% &quot;$$&quot;</code></pre>
+<p><span class="math">\[ \begin{bmatrix}
+ 0.266 &amp; 0.573 \\ 
+ 0.372 &amp; 0.908 \\ 
+ \end{bmatrix}
+ \]</span></p>
+<p>An alternative formulation which is equivalent is to use the <code>xx</code> function to concatenate the code chunks. This function allows to enter the chunks seperated by commas. The nice feature is, that it automatically adds a math environment specified via the argument <code>e</code>.</p>
+<pre class="r"><code>xx(xm(A, 2), e=1)</code></pre>
 <p><span class="math">\[
- \begin{matrix}
- 0.27 &amp; 0.57 \\ 
- 0.37 &amp; 0.91 \\ 
- \end{matrix}
- \begin{pmatrix}
- 0.27 &amp; 0.57 \\ 
- 0.37 &amp; 0.91 \\ 
- \end{pmatrix}
  \begin{bmatrix}
  0.27 &amp; 0.57 \\ 
  0.37 &amp; 0.91 \\ 
  \end{bmatrix}
- \begin{Bmatrix}
- 0.27 &amp; 0.57 \\ 
- 0.37 &amp; 0.91 \\ 
- \end{Bmatrix}
- \begin{vmatrix}
- 0.27 &amp; 0.57 \\ 
- 0.37 &amp; 0.91 \\ 
- \end{vmatrix}
- \begin{Vmatrix}
- 0.27 &amp; 0.57 \\ 
- 0.37 &amp; 0.91 \\ 
- \end{Vmatrix}
  \]</span></p>
+<p>As <code>e=1</code> and <code>digits=2</code> is the default anyway, we can reduce this to</p>
+<pre class="r"><code>xx(A)</code></pre>
+
+<p>Let’s explore more arguments. We can change the type of brackets that are produced using the <code>mtype</code> argument.</p>
+<pre class="r"><code>&quot;$$&quot; %_% xm(A, mtype = &quot;b&quot;) %_% &quot;$$&quot;</code></pre>
+<p><span class="math">\[ \begin{bmatrix}
+ 0.266 &amp; 0.573 \\ 
+ 0.372 &amp; 0.908 \\ 
+ \end{bmatrix}
+ \]</span></p>
+<p>The available bracket types (this time using the <code>xx</code> function) are</p>
+<pre class="r"><code>xx( xm(A, m=&quot;m&quot;), xm(A, m=&quot;p&quot;), xm(A, m=&quot;b&quot;), 
+    xm(A, m=&quot;B&quot;), xm(A, m=&quot;v&quot;), xm(A, m=&quot;V&quot;))   </code></pre>
+
 </div>
 <div id="more-examples" class="section level3">
 <h3>More examples</h3>
@@ -259,42 +224,42 @@ A =
 <p>The SVD of <span class="math">\(A\)</span> is</p>
 <pre class="r"><code>d &lt;- svd(A)
 &quot;$$ A =&quot; %_% A %_% &quot;= UDV^T =&quot; %_% d$u %_% diag(d$d) %_% d$v %_% &quot;^T&quot; %_% &quot;$$&quot;</code></pre>
-<p><span class="math">\[ A = \begin{pmatrix}
- 0.27 &amp; 0.57 \\ 
- 0.37 &amp; 0.91 \\ 
- \end{pmatrix}
- = UDV^T = \begin{pmatrix}
- -0.54 &amp; -0.84 \\ 
- -0.84 &amp; 0.54 \\ 
- \end{pmatrix}
- \begin{pmatrix}
- 1.17 &amp; 0.00 \\ 
- 0.00 &amp; 0.02 \\ 
- \end{pmatrix}
- \begin{pmatrix}
- -0.39 &amp; -0.92 \\ 
- -0.92 &amp; 0.39 \\ 
- \end{pmatrix}
+<p><span class="math">\[ A = \begin{bmatrix}
+ 0.266 &amp; 0.573 \\ 
+ 0.372 &amp; 0.908 \\ 
+ \end{bmatrix}
+ = UDV^T = \begin{bmatrix}
+ -0.541 &amp; -0.841 \\ 
+ -0.841 &amp; 0.541 \\ 
+ \end{bmatrix}
+ \begin{bmatrix}
+ 1.167 &amp; 0.000 \\ 
+ 0.000 &amp; 0.024 \\ 
+ \end{bmatrix}
+ \begin{bmatrix}
+ -0.391 &amp; -0.920 \\ 
+ -0.920 &amp; 0.391 \\ 
+ \end{bmatrix}
  ^T \]</span></p>
 <p>or using the <code>xx</code> function</p>
 <pre class="r"><code>xx(&quot;A =&quot;, A, &quot;= UDV^T =&quot;, d$u, diag(d$d), xmt(d$v), e=1)</code></pre>
 <p><span class="math">\[
- A = \begin{pmatrix}
- 0.27 &amp; 0.57 \\ 
- 0.37 &amp; 0.91 \\ 
- \end{pmatrix}
- = UDV^T = \begin{pmatrix}
- -0.54 &amp; -0.84 \\ 
- -0.84 &amp; 0.54 \\ 
- \end{pmatrix}
- \begin{pmatrix}
- 1.17 &amp; 0.00 \\ 
- 0.00 &amp; 0.02 \\ 
- \end{pmatrix}
- \begin{pmatrix}
- -0.39 &amp; -0.92 \\ 
- -0.92 &amp; 0.39 \\ 
- \end{pmatrix}
+ A = \begin{bmatrix}
+ 0.266 &amp; 0.573 \\ 
+ 0.372 &amp; 0.908 \\ 
+ \end{bmatrix}
+ = UDV^T = \begin{bmatrix}
+ -0.541 &amp; -0.841 \\ 
+ -0.841 &amp; 0.541 \\ 
+ \end{bmatrix}
+ \begin{bmatrix}
+ 1.167 &amp; 0.000 \\ 
+ 0.000 &amp; 0.024 \\ 
+ \end{bmatrix}
+ \begin{bmatrix}
+ -0.391 &amp; -0.920 \\ 
+ -0.920 &amp; 0.391 \\ 
+ \end{bmatrix}
  ^T \]</span></p>
 <p>Let’s create a <strong>multiple rows</strong> example using the line break function <code>lb</code> to insert linebreaks (if or not this works depends on your math environment).</p>
 <pre class="r"><code>g &lt;- rep(1, 2)
@@ -305,33 +270,33 @@ I &lt;- diag(2)
   &quot;=&quot; %_% xm(I - g %*% t(g), 0) %_% A %_% lb() %_% 
   &quot;=&quot; %_% xm((I - g %*% t(g)) %*%A) %_% 
 &quot;$$&quot; </code></pre>
-<p><span class="math">\[ \left( I - 11^T \right) A \\ = \left( \begin{pmatrix}
+<p><span class="math">\[ \left( I - 11^T \right) A \\ = \left( \begin{bmatrix}
  1 &amp; 0 \\ 
  0 &amp; 1 \\ 
- \end{pmatrix}
- - \begin{pmatrix}
+ \end{bmatrix}
+ - \begin{bmatrix}
  1 \\ 
  1 \\ 
- \end{pmatrix}
- \begin{pmatrix}
+ \end{bmatrix}
+ \begin{bmatrix}
  1 &amp; 1 \\ 
- \end{pmatrix}
- \right) \begin{pmatrix}
- 0.27 &amp; 0.57 \\ 
- 0.37 &amp; 0.91 \\ 
- \end{pmatrix}
- \\ = \begin{pmatrix}
+ \end{bmatrix}
+ \right) \begin{bmatrix}
+ 0.266 &amp; 0.573 \\ 
+ 0.372 &amp; 0.908 \\ 
+ \end{bmatrix}
+ \\ = \begin{bmatrix}
  0 &amp; -1 \\ 
  -1 &amp; 0 \\ 
- \end{pmatrix}
- \begin{pmatrix}
- 0.27 &amp; 0.57 \\ 
- 0.37 &amp; 0.91 \\ 
- \end{pmatrix}
- \\ = \begin{pmatrix}
- -0.37 &amp; -0.91 \\ 
- -0.27 &amp; -0.57 \\ 
- \end{pmatrix}
+ \end{bmatrix}
+ \begin{bmatrix}
+ 0.266 &amp; 0.573 \\ 
+ 0.372 &amp; 0.908 \\ 
+ \end{bmatrix}
+ \\ = \begin{bmatrix}
+ -0.372 &amp; -0.908 \\ 
+ -0.266 &amp; -0.573 \\ 
+ \end{bmatrix}
  \]</span></p>
 <p>or</p>
 <pre class="r"><code>xx(pl(), &quot;I - 11^T&quot;, pr(), &quot;A&quot;, lb(),
@@ -339,33 +304,33 @@ I &lt;- diag(2)
   &quot;=&quot;, xm(I - g %*% t(g), 0), A, lb(),
   &quot;=&quot;, xm((I - g %*% t(g)) %*%A), e=1)</code></pre>
 <p><span class="math">\[
- \left( I - 11^T \right) A \\ = \left( \begin{pmatrix}
+ \left( I - 11^T \right) A \\ = \left( \begin{bmatrix}
  1 &amp; 0 \\ 
  0 &amp; 1 \\ 
- \end{pmatrix}
- - \begin{pmatrix}
+ \end{bmatrix}
+ - \begin{bmatrix}
  1 \\ 
  1 \\ 
- \end{pmatrix}
- \begin{pmatrix}
+ \end{bmatrix}
+ \begin{bmatrix}
  1 &amp; 1 \\ 
- \end{pmatrix}
- \right) \begin{pmatrix}
- 0.27 &amp; 0.57 \\ 
- 0.37 &amp; 0.91 \\ 
- \end{pmatrix}
- \\ = \begin{pmatrix}
+ \end{bmatrix}
+ \right) \begin{bmatrix}
+ 0.266 &amp; 0.573 \\ 
+ 0.372 &amp; 0.908 \\ 
+ \end{bmatrix}
+ \\ = \begin{bmatrix}
  0 &amp; -1 \\ 
  -1 &amp; 0 \\ 
- \end{pmatrix}
- \begin{pmatrix}
- 0.27 &amp; 0.57 \\ 
- 0.37 &amp; 0.91 \\ 
- \end{pmatrix}
- \\ = \begin{pmatrix}
- -0.37 &amp; -0.91 \\ 
- -0.27 &amp; -0.57 \\ 
- \end{pmatrix}
+ \end{bmatrix}
+ \begin{bmatrix}
+ 0.266 &amp; 0.573 \\ 
+ 0.372 &amp; 0.908 \\ 
+ \end{bmatrix}
+ \\ = \begin{bmatrix}
+ -0.372 &amp; -0.908 \\ 
+ -0.266 &amp; -0.573 \\ 
+ \end{bmatrix}
  \]</span></p>
 </div>
 <div id="changing-the-default-settings" class="section level3">
@@ -373,43 +338,28 @@ I &lt;- diag(2)
 <p>You can change several options that will affect the output. As default e.g. numeric values are rounded to two digits and round brackets are used to display the matrices and the <code>$$</code> math environment is used. You can retrieve the current default settings by typing.</p>
 <pre class="r"><code>mat2tex_options()</code></pre>
 <pre><code>## $digits
-## [1] 2
+## [1] 3
 ## 
 ## $round
 ## [1] TRUE
 ## 
 ## $mtype
-## [1] &quot;pmatrix&quot;
+## [1] &quot;bmatrix&quot;
 ## 
 ## $mathenvir
-## [1] 1</code></pre>
+## [1] 3</code></pre>
 <p>Suppose we want to have rectangular brackets and values rounded to four digits. We can achieve that by setting the <code>xm</code> arguments accrodingly.</p>
 <pre class="r"><code>xx(xm(A, digits=4, mtype=&quot;bmatrix&quot;))</code></pre>
-<p><span class="math">\[
- \begin{bmatrix}
- 0.2655 &amp; 0.5729 \\ 
- 0.3721 &amp; 0.9082 \\ 
- \end{bmatrix}
- \]</span></p>
+
 <p>If we want to use these settings as the default and apply these settings to all matrices can instead change the default values. To change the settings enter <code>name = value</code> pairs seperated by a comma. To change the default number of digits to <code>4</code> and the type of matrix to <code>bmatrix</code> ), i.e. rectangular, type</p>
 <pre class="r"><code>opts &lt;- mat2tex_options(digits=4, mtype=&quot;bmatrix&quot;)</code></pre>
 <p>As a result the matrix <span class="math">\(A\)</span> will know look like this</p>
 <pre class="r"><code>xx(A)</code></pre>
-<p><span class="math">\[
- \begin{bmatrix}
- 0.2655 &amp; 0.5729 \\ 
- 0.3721 &amp; 0.9082 \\ 
- \end{bmatrix}
- \]</span></p>
+
 <p>To recreate the former settings again (note that the old settings were saved in <code>opt</code>) we can supply them as the argument to <code>mat2tex_options</code> and we get the old default back.</p>
 <pre class="r"><code>mat2tex_options(opts)
 xx(A)</code></pre>
-<p><span class="math">\[
- \begin{pmatrix}
- 0.27 &amp; 0.57 \\ 
- 0.37 &amp; 0.91 \\ 
- \end{pmatrix}
- \]</span></p>
+
 <div id="working-with-.rmd-and-.rnw-files" class="section level4">
 <h4>Working with <strong>.Rmd</strong> and <strong>.Rnw</strong> files</h4>
 <p>It makes sense to change the default settings according to file default math environment type you work with. Working with <code>.Rmd</code> files using <code>mathenviron=1</code> i.e. <code>$$</code> (which is the default) is suitable.</p>

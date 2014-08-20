@@ -1,6 +1,6 @@
 
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Inject R matrices into LaTeX formulas}
+%\VignetteIndexEntry{Use mat2tex with knitr and .Rnw files}
 
 \documentclass{article}
 
