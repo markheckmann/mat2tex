@@ -171,8 +171,9 @@ check_for_math_envir <- function() {
 #' @author  Mark Heckmann
 #' @export
 #'
-xx <- function(..., e=NA, label=NULL) {
-  # get default mathenvir
+xx <- function(..., e=NA, label=NULL) 
+{
+  # get default values
   if (is.na(e))
     e <- mat2tex_options()$mathenv
   dots <- list(...)
