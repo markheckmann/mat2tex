@@ -100,7 +100,15 @@ xm <- function(x, digits=NA, mtype=NA, round=NA)
 #' @rdname  xm
 #' @export
 #' 
-xmt <- function(x, digits=2, mtype="pmatrix", round=TRUE) {
+xmt <- function(x, digits=NA, mtype=NA, round=NA) {
+  # use defaults
+  opts <- mat2tex_options()
+  if (is.na(digits))
+    digits <- opts$digits
+  if (is.na(mtype))
+    mtype <- opts$mtype
+  if (is.na(round))
+    round <- opts$round  
   tc <- xm(x=x, digits=digits, mtype=mtype, round=round)
   tc %_% "^T"
 }

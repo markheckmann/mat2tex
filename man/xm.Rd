@@ -6,7 +6,7 @@
 \usage{
 xm(x, digits = NA, mtype = NA, round = NA)
 
-xmt(x, digits = 2, mtype = "pmatrix", round = TRUE)
+xmt(x, digits = NA, mtype = NA, round = NA)
 }
 \arguments{
 \item{x}{A matrix object.}
