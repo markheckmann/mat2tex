@@ -9,6 +9,11 @@ library(mat2tex)
 #opts_chunk$set(out.extra='style="display:block; margin: auto"', fig.align="center")
 ```
 
+```{r echo=FALSE}
+# reset default values. build_vignettes() seems to use current environment
+mat2tex:::mat2tex_options_init()
+```
+
 
 Inject R matrices into LaTeX formulas
 =======================================

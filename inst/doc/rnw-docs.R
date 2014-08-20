@@ -1,6 +1,10 @@
 ## ------------------------------------------------------------------------
 library(mat2tex)
 
+## ----echo=FALSE----------------------------------------------------------
+# reset default values. build_vignettes() seems to use current environment
+mat2tex:::mat2tex_options_init()
+
 ## ------------------------------------------------------------------------
 set.seed(1)
 A <- matrix(runif(4), 2)

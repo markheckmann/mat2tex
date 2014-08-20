@@ -28,6 +28,11 @@ To use \verb+mat2tex+ within \LaTeX documents you need to load the package first
 library(mat2tex)
 @
 
+<<echo=FALSE>>=
+# reset default values. build_vignettes() seems to use current environment
+mat2tex:::mat2tex_options_init()
+@
+
 It is recommended to add \verb+\usepackage{amsmath}+ in the document preamble. Otherwise not all math environments  \verb+mat2tex+ includes can be used. Now we can start. Let's create the matrix $A$.
 
 <<>>=

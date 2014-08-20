@@ -3,6 +3,10 @@ library(knitr)
 library(mat2tex)
 #opts_chunk$set(out.extra='style="display:block; margin: auto"', fig.align="center")
 
+## ----echo=FALSE----------------------------------------------------------
+# reset default values. build_vignettes() seems to use current environment
+mat2tex:::mat2tex_options_init()
+
 ## ----eval=FALSE----------------------------------------------------------
 #  library(devtools)
 #  install_github("mat2tex", "markheckmann")
