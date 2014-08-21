@@ -9,9 +9,7 @@ x \%_\% y
 x \%__\% y
 }
 \arguments{
-\item{x}{\code{texcode} object, string or matrix.}
-
-\item{y}{\code{texcode} object, string or matrix.}
+\item{x,y}{\code{texcode} object, string or matrix.}
 }
 \description{
 "\%\_\%" operator to allow for easy combination of texcode objects

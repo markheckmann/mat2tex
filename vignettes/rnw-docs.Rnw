@@ -60,6 +60,8 @@ The mat2tex package was written to facilitate the combination of matrices and \L
  
 \maketitle
 
+\section{Quick start}
+
 To use \verb+mat2tex+ within \LaTeX documents install 
 
 <<eval=FALSE>>=
@@ -130,5 +132,46 @@ xx("A = UDV^T =", d$u, diag(d$d), xmt(d$v))
 @
 
 To find more examples and get more information have a look at the other package vignettes or visit \url{https://github.com/markheckmann/mat2tex}.
+
+\section{Math environments}
+
+If you included \verb+\usepackage{amsmath}+ in the preamble you can make use of several math environments defined in the package. The environments are explained here \url{https://www.sharelatex.com/learn/Aligning_equations_with_amsmath}.
+To indicate the math environment you can either use the corresponding number or its name (see \verb+?xx+).
+
+\subsubsection*{equation and split}
+
+Here you can see that \verb+xx+ output can be nested, i.e. math environemnts can be nested.
+
+<<results='asis'>>=
+splt <- xx("AA^T & = ", A, t(A), "\\\\",
+           "& =", A %*% t(A), e="split")
+xx(splt, e="equation", label="eq1")
+@
+
+\subsubsection*{multiline}
+
+Looks ugly here. For demonstration purposes only.
+
+<<results='asis'>>=
+xx("AA^T  = ", A, t(A), "\\\\", 
+   " =", A %*% t(A), e=9, label="eq2")
+@
+
+\subsubsection*{align}
+
+Sam as \emph{equation and split} but each line is numbered.
+
+<<results='asis'>>=
+xx("AA^T  &= ", A, t(A), "\\\\", 
+   "&=", A %*% t(A), e=5, label="eq3")
+@
+
+\subsubsection*{gather}
+
+<<results='asis'>>=
+xx("AA^T  = ", A, t(A), "\\\\", 
+   "=", A %*% t(A), e=7, label="eq3")
+@
+
 
 \end{document}
