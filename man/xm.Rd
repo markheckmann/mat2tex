@@ -15,10 +15,12 @@ xmt(x, digits = NA, mtype = NA, round = NA)
 Available types are \code{"matrix", "pmatrix", "bmatrix",
 "Bmatrix", "vmatrix", "Vmatrix"}.}
 
-\item{digits}{Number of digits to display. Only trimmin, no rounding.}
+\item{digits}{Number of digits to display.}
+
+\item{round}{Logical. Round numbers? If not numbers are trimmed only.}
 }
 \value{
-Object of class texcode.
+Object of class \code{texcode}.
 }
 \description{
 Convert a matrix to LaTeX code.

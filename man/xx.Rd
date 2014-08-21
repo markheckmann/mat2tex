@@ -10,10 +10,15 @@ xx(..., e = NA, label = NULL)
 into texcode objects. Enter any number of chunks
 seperated by commas.}
 
-\item{e}{LaTeX math environment to use. If \code{NA} the default
+\item{e}{LaTeX math environment to use (numeric or string).
+If \code{NA} the default
 is used as defined in \code{mat2tex_options()$mathenv}.
 If set to \code{NULL}, no environment is added, just the plain
-math code is returned.}
+math code is returned. The available environments are
+\code{1=$$, 2=$, 3=equation, 4=equation*, 5=align, 6=align*,
+7=gather, 8=gather*, 9=multiline, 10=multiline*, 11=split}.
+You can either supply the corresponding numeric or the name of
+the math environment. See details.}
 
 \item{label}{A label for the equation in case an environment is used
 that supports labels, e.g. \code{equation}.
@@ -24,6 +29,11 @@ Object of class \code{texcode}.
 }
 \description{
 Concatenate \code{texcode} chunks.
+}
+\details{
+For \code{Rmd} file only math environment (argument \code{e}) 1 and 2 are relevant.
+         When using \code{Rnw} files make sure to include the \code{amsmath} package
+         the document preamble as most environments are defined in it.
 }
 \author{
 Mark Heckmann

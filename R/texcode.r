@@ -51,8 +51,9 @@ lex <- function(x) {
 #' @param   mtype   LaTeX matrix type, i.e. round braces, curly braces etc.
 #'                  Available types are \code{"matrix", "pmatrix", "bmatrix", 
 #'                  "Bmatrix", "vmatrix", "Vmatrix"}.
-#' @param   digits  Number of digits to display. Only trimmin, no rounding.
-#' @return  Object of class texcode.
+#' @param   digits  Number of digits to display. 
+#' @param   round   Logical. Round numbers? If not numbers are trimmed only.
+#' @return  Object of class \code{texcode}.
 #' @rdname  xm
 #' @author  Mark Heckmann
 #' @export
@@ -129,20 +130,24 @@ print.texcode <- function(x, autoenv=TRUE, ...) {
 
 math_env_code <- function(e=1, begin=TRUE, label=NULL) 
 {
-  es <- c("$$", "$")
-  es.be <- c("equation", "equation*", "align", "align*")
+  es <- c("$$", "$")      
+  es.be <- c("equation", "equation*", "align", "align*",     # envirs w \begin \end wrapper
+             "gather", "gather*", "multline", "multline*", "split")
+  all.es <- c(es, es.be)
+  if (is.character(e))      # convert e to number of given as character
+    e <- which(match.arg(e, all.es) == all.es)
   if (!is.null(label) & begin)
     label <- paste0("\\label{", label, "}")
   es.b <- c(paste0(es, "\n"), 
             paste0("\\begin{", es.be, "} ", label, "\n"))
   es.e <- c(paste0(es, "\n"), 
             paste0("\\end{", es.be, "}\n"))
-  
   math <- ifelse (begin, es.b[e], es.e[e])
   as.texcode(math)
 }
 # math_env_code(1)
 # math_env_code(3, F)
+
 
 wrap_in_math_envir <- function(x, e=2, label=NULL) 
 {
@@ -150,7 +155,9 @@ wrap_in_math_envir <- function(x, e=2, label=NULL)
     x %_% math_env_code(e=e, begin=FALSE)
 }
 
-check_for_math_envir <- function() {
+
+# TODO
+autocheck_for_math_envir <- function() {
   
 }
 
@@ -160,13 +167,21 @@ check_for_math_envir <- function() {
 #' @param   ... \code{texcode} objects or objects that can ce converted
 #'              into texcode objects. Enter any number of chunks 
 #'              seperated by commas.
-#' @param e LaTeX math environment to use. If \code{NA} the default 
+#' @param e LaTeX math environment to use (numeric or string). 
+#'          If \code{NA} the default 
 #'          is used as defined in \code{mat2tex_options()$mathenv}.
 #'          If set to \code{NULL}, no environment is added, just the plain
-#'          math code is returned.
-#' @param label A label for the equation in case an environment is used 
+#'          math code is returned. The available environments are
+#'          \code{1=$$, 2=$, 3=equation, 4=equation*, 5=align, 6=align*, 
+#'          7=gather, 8=gather*, 9=multiline, 10=multiline*, 11=split}. 
+#'          You can either supply the corresponding numeric or the name of 
+#'          the math environment. See details.
+#' @param   label A label for the equation in case an environment is used 
 #'          that supports labels, e.g. \code{equation}. 
 #'          Only applicable to \code{Rnw} documents.
+#' @details For \code{Rmd} file only math environment (argument \code{e}) 1 and 2 are relevant.
+#'          When using \code{Rnw} files make sure to include the \code{amsmath} package 
+#'          the document preamble as most environments are defined in it.
 #' @return  Object of class \code{texcode}.
 #' @author  Mark Heckmann
 #' @export
@@ -241,9 +256,11 @@ is.texcode <- function(x) {
 #' 
 #' \code{xb} will begin, \code{xb} will end a math environment.
 #' 
-#' @param   e     Numeric indicating the type of math environment to begin or end
-#'                (\code{1 = equation, 2= equation*, 3=$, 4=align, 5=align*}).
-#'                Default is \code{1 = 'equation'}. 
+#' @inheritParams xx
+#' @details For \code{Rmd} file only math environment (argument \code{e}) 1 and 2 are relevant.
+#'          When using \code{Rnw} files make sure to include the \code{amsmath} package 
+#'          the document preamble as most environments are defined in it.
+#'                
 #' @param label   Optional LaTeX equation label               
 #' @return  Object of class texcode.
 #' @author  Mark Heckmann
@@ -268,8 +285,7 @@ xe <- function(e=1) {
 
 #' "\%\_\%" operator to allow for easy combination of texcode objects 
 #' 
-#' @param x     \code{texcode} object, string or matrix.
-#' @param y    \code{texcode} object, string or matrix.
+#' @param x,y     \code{texcode} object, string or matrix.
 #' @rdname grapes-_-grapes.Rd
 #' @export
 #' @keywords internal

@@ -9,11 +9,17 @@ xb(e = NA, label = NULL)
 xe(e = 1)
 }
 \arguments{
-\item{e}{Numeric indicating the type of math environment to begin or end
-(\code{1 = equation, 2= equation*, 3=$, 4=align, 5=align*}).
-Default is \code{1 = 'equation'}.}
-
 \item{label}{Optional LaTeX equation label}
+
+\item{e}{LaTeX math environment to use (numeric or string).
+If \code{NA} the default
+is used as defined in \code{mat2tex_options()$mathenv}.
+If set to \code{NULL}, no environment is added, just the plain
+math code is returned. The available environments are
+\code{1=$$, 2=$, 3=equation, 4=equation*, 5=align, 6=align*,
+7=gather, 8=gather*, 9=multiline, 10=multiline*, 11=split}.
+You can either supply the corresponding numeric or the name of
+the math environment. See details.}
 }
 \value{
 Object of class texcode.
@@ -22,6 +28,11 @@ Object of class texcode.
 \code{xb} will begin, \code{xb} will end a math environment.
 
 
+}
+\details{
+For \code{Rmd} file only math environment (argument \code{e}) 1 and 2 are relevant.
+         When using \code{Rnw} files make sure to include the \code{amsmath} package
+         the document preamble as most environments are defined in it.
 }
 \author{
 Mark Heckmann
