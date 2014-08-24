@@ -242,9 +242,9 @@ as.texcode <- function(x)
     x <- xm(x)
   if (class(x) == "data.frame")
     x <- xm(as.matrix(x))
-  if (class(x) == "character")
+  if (class(x) == "character" & length(x) == 1)  # only single string
     x <- lex(x)
-  if (is.vector(x) & length(x) > 1)
+  if (is.vector(x) & length(x) > 1)   # any vector length > 1
     x <- xm(as.matrix(x))
   if (is.vector(x) & length(x) == 1)
     x <- lex(paste(x, collapse=" "))    
