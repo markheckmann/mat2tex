@@ -12,7 +12,9 @@ as.texcode(x)
 Convert to \code{texcode} object.
 }
 \details{
-Currently only character vectors can be converted.
+Converts matrices, dataframes, strings and vectors.
+            Vectors of length 1 are converted to strings, e.g. to represent
+            scalars.
 }
 \keyword{internal}
 

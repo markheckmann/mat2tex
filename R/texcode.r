@@ -227,16 +227,22 @@ Ops.texcode <- function(e1, e2) {
 #' @param x    Some R object.
 #' @export
 #' @keywords   internal
-#' @details    Currently only character vectors can be converted.
+#' @details    Converts matrices, dataframes, strings and vectors.
+#'             Vectors of length 1 are converted to strings, e.g. to represent
+#'             scalars.
 #'
 as.texcode <- function(x) 
 {
   if (class(x) == "matrix")
     x <- xm(x)
+  if (class(x) == "data.frame")
+    x <- xm(as.matrix(x))
   if (class(x) == "character")
     x <- lex(x)
+  if (is.vector(x) & length(x) > 1)
+    x <- xm(as.matrix(x))
   if (is.vector(x) & length(x) == 1)
-    x <- lex(paste(x, collapse=" "))
+    x <- lex(paste(x, collapse=" "))    
   x
 }
 #ax <- as.texcode
