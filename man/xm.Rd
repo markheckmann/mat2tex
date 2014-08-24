@@ -15,7 +15,7 @@ xmt(x, digits = NA, mtype = NA, round = NA)
 Available types are \code{"matrix", "pmatrix", "bmatrix",
 "Bmatrix", "vmatrix", "Vmatrix"}.}
 
-\item{digits}{Number of digits to display.}
+\item{digits}{Number of digits to display (if matrix is numeric).}
 
 \item{round}{Logical. Round numbers? If not numbers are trimmed only.}
 }

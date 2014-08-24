@@ -51,7 +51,7 @@ lex <- function(x) {
 #' @param   mtype   LaTeX matrix type, i.e. round braces, curly braces etc.
 #'                  Available types are \code{"matrix", "pmatrix", "bmatrix", 
 #'                  "Bmatrix", "vmatrix", "Vmatrix"}.
-#' @param   digits  Number of digits to display. 
+#' @param   digits  Number of digits to display (if matrix is numeric). 
 #' @param   round   Logical. Round numbers? If not numbers are trimmed only.
 #' @return  Object of class \code{texcode}.
 #' @rdname  xm
@@ -82,21 +82,24 @@ xm <- function(x, digits=NA, mtype=NA, round=NA)
               "Bmatrix", "vmatrix", "Vmatrix")
   mtype <- match.arg(mtype, mtypes)
   
-  # formatting if no rounding occurs, the values are simply trimmed
-  if (round)
-    x <- round(x, digits=digits)
+  # trim numeric values (after rounding if requested)
   x <- as.matrix(x)
-  xc <- formatC(x, digits=digits, format="f")
+  if (is.numeric(x)) {
+    if (round)
+      x <- round(x, digits=digits) 
+    x <- formatC(x, digits=digits, format="f")
+  }
 
-  # LaTex output
+  # LaTeX output
   l.env.begin <- paste0("\\begin{", mtype, "}\n")
   l.env.end <- paste0("\\end{", mtype, "}\n")
-  l.matrix <- apply(xc, 1, function(x) 
+  l.matrix <- apply(x, 1, function(x) 
                     paste(paste(x, collapse=" & "), "\\\\ \n"))
   res <- list(l.env.begin, l.matrix, l.env.end)
   class(res) <- "texcode"
   res
 }
+
 
 #' @rdname  xm
 #' @export
@@ -114,6 +117,7 @@ xmt <- function(x, digits=NA, mtype=NA, round=NA) {
   tc %_% "^T"
 }
 
+
 #' Print method for objects of class \code{texcode}.
 #' 
 #' @param x    texcode object.
@@ -127,6 +131,7 @@ print.texcode <- function(x, autoenv=TRUE, ...) {
   cat(tex.string)
 }
 # TODO: auto-add standard envir if 
+
 
 math_env_code <- function(e=1, begin=TRUE, label=NULL) 
 {
@@ -247,6 +252,7 @@ as.texcode <- function(x)
 }
 #ax <- as.texcode
 
+
 #' Check if object is a \code{texcode} object.
 #' 
 #' @param x    R object.
@@ -301,6 +307,7 @@ xe <- function(e=1) {
   as.texcode(x) + as.texcode(y)
 }
 
+
 #' @rdname grapes-_-grapes.Rd
 #' @export
 #' 
@@ -319,12 +326,14 @@ pl <- function() {
   as.texcode("\\left(")
 }
 
+
 #' @rdname parenthesis.Rd
 #' @export
 #' 
 pr <- function() {
   as.texcode("\\right)")
 }
+
 
 # Hack to allow the case where no texcode object is used at all.
 # This may be the case if the user does "$" + "$".
@@ -339,6 +348,7 @@ pr <- function() {
     .Primitive("+")(x,y)
   }
 }
+
 
 #' Convenience function for \code{\\mathbf\{\}}
 #' 
