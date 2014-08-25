@@ -13,7 +13,7 @@ xmt(x, digits = NA, mtype = NA, round = NA)
 
 \item{mtype}{LaTeX matrix type, i.e. round braces, curly braces etc.
 Available types are \code{"matrix", "pmatrix", "bmatrix",
-"Bmatrix", "vmatrix", "Vmatrix"}.}
+"Bmatrix", "vmatrix", "Vmatrix", "bordermatrix"}.}
 
 \item{digits}{Number of digits to display (if matrix is numeric).}
 
@@ -34,6 +34,15 @@ xm(m)
 "$" \%\% xm(m) \%\% "$"
 
 "$" + xm(m) + "$"
+
+# matrix types
+x <- matrix(1:4, 2)
+xm(x, mtype="matrix")
+xm(x, mtype="bmatrix")
+
+rownames(x) <- letters[1:2]
+colnames(x) <- LETTERS[1:2]
+xm(x, mtype="bordermatrix")
 }
 \author{
 Mark Heckmann

@@ -45,12 +45,53 @@ lex <- function(x) {
 }
 
 
+#' Create LaTeX code for several matrix types defined in amsmath.
+#' 
+#' @param   x       A matrix object.
+#' @param   mtype   LaTeX matrix type.
+#' @return  List with LaTeX code fragments.
+#' @keywords internal
+#' 
+latexcode_matrix <- function(x, mtype) 
+{
+  l.env.begin <- paste0("\\begin{", mtype, "}\n")
+  l.env.end <- paste0("\\end{", mtype, "}\n")
+  l.matrix <- apply(x, 1, function(x) 
+    paste(paste(x, collapse=" & "), "\\\\ \n"))
+  list(l.env.begin, l.matrix, l.env.end)
+}
+
+
+#' Create LaTeX code for bordermatrix.
+#' 
+#' @param   x       A matrix object with column and/or rownames.
+#' @param   corner  Entry for upper left corner, usually empty.
+#' @return  List with LaTeX code fragments.
+#' @keywords internal
+#' 
+latexcode_bordermatrix <- function(x, corner="") 
+{
+  nr <- nrow(x)
+  nc <- ncol(x)
+  rnames <- rownames(x)
+  cnames <- colnames(x)
+  if (is.null(rnames))
+    rnames <- rep("", nr)
+  if (is.null(cnames))
+    cnames <- rep("", nc) 
+  x.ext <- cbind(c(corner, rnames), rbind(cnames, x))  
+  l.matrix <- apply(x.ext, 1, function(x) 
+    paste(paste(x, collapse=" & "), "\\cr \n"))
+  list("\\bordermatrix{\n", l.matrix, "}\n")
+}
+
+
 #' Convert a matrix to LaTeX code.
 #'
 #' @param   x       A matrix object.
 #' @param   mtype   LaTeX matrix type, i.e. round braces, curly braces etc.
 #'                  Available types are \code{"matrix", "pmatrix", "bmatrix", 
-#'                  "Bmatrix", "vmatrix", "Vmatrix"}.
+#'                  "Bmatrix", "vmatrix", "Vmatrix", "bordermatrix"}.
 #' @param   digits  Number of digits to display (if matrix is numeric). 
 #' @param   round   Logical. Round numbers? If not numbers are trimmed only.
 #' @return  Object of class \code{texcode}.
@@ -67,7 +108,16 @@ lex <- function(x) {
 #' "$" %% xm(m) %% "$" 
 #' 
 #' "$" + xm(m) + "$" 
-#'
+#' 
+#' # matrix types
+#' x <- matrix(1:4, 2)
+#' xm(x, mtype="matrix")
+#' xm(x, mtype="bmatrix")
+#' 
+#' rownames(x) <- letters[1:2]
+#' colnames(x) <- LETTERS[1:2]
+#' xm(x, mtype="bordermatrix")
+#' 
 xm <- function(x, digits=NA, mtype=NA, round=NA)
 {
   opts <- mat2tex_options()
@@ -80,7 +130,8 @@ xm <- function(x, digits=NA, mtype=NA, round=NA)
 
   mtypes <- c("matrix", "pmatrix", "bmatrix", 
               "Bmatrix", "vmatrix", "Vmatrix")
-  mtype <- match.arg(mtype, mtypes)
+  more.types <- "bordermatrix"
+  mtype <- match.arg(mtype, c(mtypes, more.types))
   
   # trim numeric values (after rounding if requested)
   x <- as.matrix(x)
@@ -91,11 +142,10 @@ xm <- function(x, digits=NA, mtype=NA, round=NA)
   }
 
   # LaTeX output
-  l.env.begin <- paste0("\\begin{", mtype, "}\n")
-  l.env.end <- paste0("\\end{", mtype, "}\n")
-  l.matrix <- apply(x, 1, function(x) 
-                    paste(paste(x, collapse=" & "), "\\\\ \n"))
-  res <- list(l.env.begin, l.matrix, l.env.end)
+  if (mtype %in% mtypes)
+    res <- latexcode_matrix(x, mtype)
+  else if (mtype %in% more.types)
+    res <- latexcode_bordermatrix(x)
   class(res) <- "texcode"
   res
 }

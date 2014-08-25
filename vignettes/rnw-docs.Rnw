@@ -173,5 +173,29 @@ xx("AA^T  = ", A, t(A), "\\\\",
    "=", A %*% t(A), e=7, label="eq3")
 @
 
+\section{Matrix types}
+
+You can generate different matrix types using the \verb+mtype+ argument in \verb+xm+. Available types are defined in the \texttt{amsmath} package: \texttt{matrix},  \texttt{pmatrix},  \texttt{bmatrix},  \texttt{Bmatrix},  \texttt{vmatrix} and   \texttt{Vmatrix}.
+
+<<results='asis'>>=
+xx(xm(A, mtype="matrix"))
+@
+
+<<results='asis'>>=
+xx(xm(A, mtype="pmatrix"))
+@
+
+<<results='asis'>>=
+xx(xm(A, mtype="bmatrix"))
+@
+
+To print row and/or column names as well, bordermatrix can be used. 
+
+<<results='asis'>>=
+rownames(A) <- letters[1:2]
+colnames(A) <- LETTERS[1:2]
+xx(xm(A, mtype="bordermatrix"))
+@
+
 
 \end{document}
