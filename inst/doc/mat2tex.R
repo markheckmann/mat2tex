@@ -40,10 +40,10 @@ xx(xm(A, 2), e=1)
 xx(A)
 
 ## ----echo=TRUE, results='asis'-------------------------------------------
-"$$" %_% xm(A, mtype = "b") %_% "$$"
+"$$" %_% xm(A, mtype = "bm") %_% "$$"
 
 ## ----echo=TRUE, results='asis'-------------------------------------------
-xx( xm(A, m="m"), xm(A, m="p"), xm(A, m="b"), 
+xx( xm(A, m="m"), xm(A, m="p"), xm(A, m="bm"), 
     xm(A, m="B"), xm(A, m="v"), xm(A, m="V"))   
 
 ## ----echo=TRUE, results='asis'-------------------------------------------

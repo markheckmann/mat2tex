@@ -219,14 +219,14 @@ A =
  \end{pmatrix}
  \]</span></p>
 <p>Let’s explore more arguments. We can change the type of brackets that are produced using the <code>mtype</code> argument.</p>
-<pre class="r"><code>&quot;$$&quot; %_% xm(A, mtype = &quot;b&quot;) %_% &quot;$$&quot;</code></pre>
+<pre class="r"><code>&quot;$$&quot; %_% xm(A, mtype = &quot;bm&quot;) %_% &quot;$$&quot;</code></pre>
 <p><span class="math">\[ \begin{bmatrix}
  0.27 &amp; 0.57 \\ 
  0.37 &amp; 0.91 \\ 
  \end{bmatrix}
  \]</span></p>
 <p>The available bracket types (this time using the <code>xx</code> function) are</p>
-<pre class="r"><code>xx( xm(A, m=&quot;m&quot;), xm(A, m=&quot;p&quot;), xm(A, m=&quot;b&quot;), 
+<pre class="r"><code>xx( xm(A, m=&quot;m&quot;), xm(A, m=&quot;p&quot;), xm(A, m=&quot;bm&quot;), 
     xm(A, m=&quot;B&quot;), xm(A, m=&quot;v&quot;), xm(A, m=&quot;V&quot;))   </code></pre>
 <p><span class="math">\[
  \begin{matrix}

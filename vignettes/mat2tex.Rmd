@@ -131,13 +131,13 @@ xx(A)
 Let's explore more arguments. We can change the type of brackets that are produced using the `mtype` argument.
 
 ```{r echo=TRUE, results='asis'}
-"$$" %_% xm(A, mtype = "b") %_% "$$"
+"$$" %_% xm(A, mtype = "bm") %_% "$$"
 ```
 
 The available bracket types (this time using the `xx` function) are
 
 ```{r echo=TRUE, results='asis'}
-xx( xm(A, m="m"), xm(A, m="p"), xm(A, m="b"), 
+xx( xm(A, m="m"), xm(A, m="p"), xm(A, m="bm"), 
     xm(A, m="B"), xm(A, m="v"), xm(A, m="V"))   
 ```
 

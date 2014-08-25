@@ -52,3 +52,17 @@ xx("AA^T  &= ", A, t(A), "\\\\",
 xx("AA^T  = ", A, t(A), "\\\\", 
    "=", A %*% t(A), e=7, label="eq3")
 
+## ----results='asis'------------------------------------------------------
+xx(xm(A, mtype="matrix"))
+
+## ----results='asis'------------------------------------------------------
+xx(xm(A, mtype="pmatrix"))
+
+## ----results='asis'------------------------------------------------------
+xx(xm(A, mtype="bmatrix"))
+
+## ----results='asis'------------------------------------------------------
+rownames(A) <- letters[1:2]
+colnames(A) <- LETTERS[1:2]
+xx(xm(A, mtype="bordermatrix"))
+
