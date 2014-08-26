@@ -222,34 +222,46 @@ autocheck_for_math_envir <- function() {
 #' @param   ... \code{texcode} objects or objects that can ce converted
 #'              into texcode objects. Enter any number of chunks 
 #'              seperated by commas.
-#' @param e LaTeX math environment to use (numeric or string). 
+#' @param e Math environment to use (numeric or string). 
 #'          If \code{NA} the default 
 #'          is used as defined in \code{mat2tex_options()$mathenv}.
 #'          If set to \code{NULL}, no environment is added, just the plain
-#'          math code is returned. The available environments are
-#'          \code{1=$$, 2=$, 3=equation, 4=equation*, 5=align, 6=align*, 
-#'          7=gather, 8=gather*, 9=multiline, 10=multiline*, 11=split}. 
-#'          You can either supply the corresponding numeric or the name of 
-#'          the math environment. See details.
+#'          math code is returned. See details.
 #' @param   label A label for the equation in case an environment is used 
 #'          that supports labels, e.g. \code{equation}. 
 #'          Only applicable to \code{Rnw} documents.
-#' @details For \code{Rmd} file only math environment (argument \code{e}) 1 and 2 are relevant.
+#' @inheritParams xm         
+#' @details The available math environments are
+#'           \code{1=$$, 2=$, 3=equation, 4=equation*, 5=align, 6=align*, 
+#'          7=gather, 8=gather*, 9=multiline, 10=multiline*, 11=split}. 
+#'          You can either supply the corresponding numeric or the name of 
+#'          the math environment in argument \code{e}. 
+#'          For \code{Rmd} file only math environment (argument \code{e}) 1 and 2 are relevant.
 #'          When using \code{Rnw} files make sure to include the \code{amsmath} package 
 #'          the document preamble as most environments are defined in it.
 #' @return  Object of class \code{texcode}.
 #' @author  Mark Heckmann
 #' @export
 #'
-xx <- function(..., e=NA, label=NULL) 
+xx <- function(..., e=NA, label=NULL, digits=NA, mtype=NA, round=NA) 
 {
-  # get default values
+  # temporarily change defaults within xx
+  opts <- mat2tex_options()
+  if (!is.na(digits))
+    mat2tex_options(digits=digits)
+  if (!is.na(mtype))
+    mat2tex_options(mtype=mtype)
+  if (!is.na(round))
+    mat2tex_options(round=round)
+  
+  # get default values 
   if (is.na(e))
     e <- mat2tex_options()$mathenv
   dots <- list(...)
   texcodes <- Reduce("%_%", dots) 
   if (!is.null(e)) 
     texcodes <- wrap_in_math_envir(texcodes, e = e, label=label) 
+  mat2tex_options(opts) # restore old option pars
   texcodes
 }
 
@@ -319,10 +331,14 @@ is.texcode <- function(x) {
 #' \code{xb} will begin, \code{xb} will end a math environment.
 #' 
 #' @inheritParams xx
-#' @details For \code{Rmd} file only math environment (argument \code{e}) 1 and 2 are relevant.
+#' @details The available math environments are
+#'           \code{1=$$, 2=$, 3=equation, 4=equation*, 5=align, 6=align*, 
+#'          7=gather, 8=gather*, 9=multiline, 10=multiline*, 11=split}. 
+#'          You can either supply the corresponding numeric or the name of 
+#'          the math environment in argument \code{e}. 
+#'          For \code{Rmd} file only math environment (argument \code{e}) 1 and 2 are relevant.
 #'          When using \code{Rnw} files make sure to include the \code{amsmath} package 
-#'          the document preamble as most environments are defined in it.
-#'                
+#'          the document preamble as most environments are defined in it.      
 #' @param label   Optional LaTeX equation label               
 #' @return  Object of class texcode.
 #' @author  Mark Heckmann

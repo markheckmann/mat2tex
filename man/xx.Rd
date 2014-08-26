@@ -3,26 +3,30 @@
 \alias{xx}
 \title{Concatenate \code{texcode} chunks.}
 \usage{
-xx(..., e = NA, label = NULL)
+xx(..., e = NA, label = NULL, digits = NA, mtype = NA, round = NA)
 }
 \arguments{
 \item{...}{\code{texcode} objects or objects that can ce converted
 into texcode objects. Enter any number of chunks
 seperated by commas.}
 
-\item{e}{LaTeX math environment to use (numeric or string).
+\item{e}{Math environment to use (numeric or string).
 If \code{NA} the default
 is used as defined in \code{mat2tex_options()$mathenv}.
 If set to \code{NULL}, no environment is added, just the plain
-math code is returned. The available environments are
-\code{1=$$, 2=$, 3=equation, 4=equation*, 5=align, 6=align*,
-7=gather, 8=gather*, 9=multiline, 10=multiline*, 11=split}.
-You can either supply the corresponding numeric or the name of
-the math environment. See details.}
+math code is returned. See details.}
 
 \item{label}{A label for the equation in case an environment is used
 that supports labels, e.g. \code{equation}.
 Only applicable to \code{Rnw} documents.}
+
+\item{digits}{Number of digits to display (if matrix is numeric).}
+
+\item{mtype}{LaTeX matrix type, i.e. round braces, curly braces etc.
+Available types are \code{"matrix", "pmatrix", "bmatrix",
+"Bmatrix", "vmatrix", "Vmatrix", "bordermatrix"}.}
+
+\item{round}{Logical. Round numbers? If not numbers are trimmed only.}
 }
 \value{
 Object of class \code{texcode}.
@@ -31,7 +35,12 @@ Object of class \code{texcode}.
 Concatenate \code{texcode} chunks.
 }
 \details{
-For \code{Rmd} file only math environment (argument \code{e}) 1 and 2 are relevant.
+The available math environments are
+          \code{1=$$, 2=$, 3=equation, 4=equation*, 5=align, 6=align*,
+         7=gather, 8=gather*, 9=multiline, 10=multiline*, 11=split}.
+         You can either supply the corresponding numeric or the name of
+         the math environment in argument \code{e}.
+         For \code{Rmd} file only math environment (argument \code{e}) 1 and 2 are relevant.
          When using \code{Rnw} files make sure to include the \code{amsmath} package
          the document preamble as most environments are defined in it.
 }
