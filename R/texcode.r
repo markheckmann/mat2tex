@@ -164,7 +164,7 @@ xmt <- function(x, digits=NA, mtype=NA, round=NA) {
   if (is.na(round))
     round <- opts$round  
   tc <- xm(x=x, digits=digits, mtype=mtype, round=round)
-  tc %_% "^T"
+  tc %_% opts$transpose.sign
 }
 
 

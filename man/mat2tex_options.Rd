@@ -24,6 +24,9 @@ get and set mat2tex default options
  # change default for matrix type and digits
  mat2tex_options(digits=3, mtype="bmatrix")
 
+ # change default tranpose sign (e.g. used in xmt)
+ mat2tex_options(transpose.sign="^\\\\intercal")
+
 }
 }
 

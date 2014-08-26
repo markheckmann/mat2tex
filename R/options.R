@@ -12,6 +12,7 @@ flatten <- function (object, use.names = TRUE, ...)
 # flatten(l)
 # flatten(list(l))
 
+
 # init mat2tex default settings when package is loaded
 #
 mat2tex_options_init <- function() 
@@ -19,7 +20,8 @@ mat2tex_options_init <- function()
   l <- list(digits = 2,
             round=TRUE,
             mtype="pmatrix",
-            mathenvir = 1)  
+            mathenvir = 1,
+            transpose.sign = "^{T}")  
   options(mat2tex=l)   
 }
 #mat2tex_options_init()
@@ -39,6 +41,9 @@ mat2tex_options_init <- function()
 #'  
 #'  # change default for matrix type and digits
 #'  mat2tex_options(digits=3, mtype="bmatrix")
+#'  
+#'  # change default tranpose sign (e.g. used in xmt)
+#'  mat2tex_options(transpose.sign="^\\intercal")
 #'  
 #' }
 #' 
