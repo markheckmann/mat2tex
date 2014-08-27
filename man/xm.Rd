@@ -4,9 +4,9 @@
 \alias{xmt}
 \title{Convert a matrix to LaTeX code.}
 \usage{
-xm(x, digits = NA, mtype = NA, round = NA)
+xm(x, digits = NA, mtype = NA, round = NA, na = NA)
 
-xmt(x, digits = NA, mtype = NA, round = NA)
+xmt(x, digits = NA, mtype = NA, round = NA, na = NA)
 }
 \arguments{
 \item{x}{A matrix object.}
@@ -18,6 +18,8 @@ Available types are \code{"matrix", "pmatrix", "bmatrix",
 \item{digits}{Number of digits to display (if matrix is numeric).}
 
 \item{round}{Logical. Round numbers? If not numbers are trimmed only.}
+
+\item{na}{How to replace NA values? (default is \code{""}).}
 }
 \value{
 Object of class \code{texcode}.

@@ -3,7 +3,8 @@
 \alias{xx}
 \title{Concatenate \code{texcode} chunks.}
 \usage{
-xx(..., e = NA, label = NULL, digits = NA, mtype = NA, round = NA)
+xx(..., e = NA, label = NULL, digits = NA, mtype = NA, round = NA,
+  na = NA)
 }
 \arguments{
 \item{...}{\code{texcode} objects or objects that can ce converted
@@ -27,6 +28,8 @@ Available types are \code{"matrix", "pmatrix", "bmatrix",
 "Bmatrix", "vmatrix", "Vmatrix", "bordermatrix"}.}
 
 \item{round}{Logical. Round numbers? If not numbers are trimmed only.}
+
+\item{na}{How to replace NA values? (default is \code{""}).}
 }
 \value{
 Object of class \code{texcode}.

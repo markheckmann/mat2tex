@@ -94,6 +94,7 @@ latexcode_bordermatrix <- function(x, corner="")
 #'                  "Bmatrix", "vmatrix", "Vmatrix", "bordermatrix"}.
 #' @param   digits  Number of digits to display (if matrix is numeric). 
 #' @param   round   Logical. Round numbers? If not numbers are trimmed only.
+#' @param   na      How to replace NA values? (default is \code{""}).
 #' @return  Object of class \code{texcode}.
 #' @rdname  xm
 #' @author  Mark Heckmann
@@ -118,7 +119,7 @@ latexcode_bordermatrix <- function(x, corner="")
 #' colnames(x) <- LETTERS[1:2]
 #' xm(x, mtype="bordermatrix")
 #' 
-xm <- function(x, digits=NA, mtype=NA, round=NA)
+xm <- function(x, digits=NA, mtype=NA, round=NA, na=NA)
 {
   opts <- mat2tex_options()
   if (is.na(digits))
@@ -127,6 +128,8 @@ xm <- function(x, digits=NA, mtype=NA, round=NA)
     mtype <- opts$mtype
   if (is.na(round))
     round <- opts$round
+  if (is.na(na))                         
+    na <- mat2tex_options()$na       # get string to replace NAs with
 
   mtypes <- c("matrix", "pmatrix", "bmatrix", 
               "Bmatrix", "vmatrix", "Vmatrix")
@@ -135,12 +138,14 @@ xm <- function(x, digits=NA, mtype=NA, round=NA)
   
   # trim numeric values (after rounding if requested)
   x <- as.matrix(x)
+  nas <- is.na(x)                             # save NA positions
   if (is.numeric(x)) {
     if (round)
       x <- round(x, digits=digits) 
-    x <- formatC(x, digits=digits, format="f")
+    x <- formatC(x, digits=digits, format="f")  # format first
   }
-
+  x[nas] <- na                                # replace NAs
+  
   # LaTeX output
   if (mtype %in% mtypes)
     res <- latexcode_matrix(x, mtype)
@@ -154,7 +159,7 @@ xm <- function(x, digits=NA, mtype=NA, round=NA)
 #' @rdname  xm
 #' @export
 #' 
-xmt <- function(x, digits=NA, mtype=NA, round=NA) {
+xmt <- function(x, digits=NA, mtype=NA, round=NA, na=NA) {
   # use defaults
   opts <- mat2tex_options()
   if (is.na(digits))
@@ -243,7 +248,7 @@ autocheck_for_math_envir <- function() {
 #' @author  Mark Heckmann
 #' @export
 #'
-xx <- function(..., e=NA, label=NULL, digits=NA, mtype=NA, round=NA) 
+xx <- function(..., e=NA, label=NULL, digits=NA, mtype=NA, round=NA, na=NA) 
 {
   # temporarily change defaults within xx
   opts <- mat2tex_options()
@@ -253,6 +258,8 @@ xx <- function(..., e=NA, label=NULL, digits=NA, mtype=NA, round=NA)
     mat2tex_options(mtype=mtype)
   if (!is.na(round))
     mat2tex_options(round=round)
+  if (!is.na(na))
+    mat2tex_options(na=na)
   
   # get default values 
   if (is.na(e))

@@ -21,7 +21,8 @@ mat2tex_options_init <- function()
             round=TRUE,
             mtype="pmatrix",
             mathenvir = 1,
-            transpose.sign = "^{T}")  
+            transpose.sign = "^{T}",
+            na = "")  
   options(mat2tex=l)   
 }
 #mat2tex_options_init()
