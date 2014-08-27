@@ -1,0 +1,124 @@
+---
+title: "dev"
+author: "Mark Heckmann"
+date: "24. August 2014"
+output: html_document
+---
+
+
+```{r}
+library(mat2tex)
+```
+
+## `as.texcode`
+
+
+#### Matrix
+
+##### numeric
+
+```{r echo=TRUE, results='asis'}
+set.seed(1)
+A <- matrix(runif(4), 2)
+xx(A)
+```
+
+##### character 
+
+```{r echo=TRUE, results='asis'}
+B <- matrix(letters[1:15], 3)
+xx(B)
+```
+
+##### Logical
+
+```{r echo=TRUE, results='asis'}
+L <- matrix(c(T,F,T,F), 2)
+xx(L)
+```
+
+
+#### Dataframe
+
+```{r echo=TRUE, results='asis'}
+a <- as.data.frame(A)
+xx(a)
+```
+
+```{r echo=TRUE, results='asis'}
+xx(iris[1:5, ])
+```
+
+### Vector
+
+##### Numeric
+
+```{r echo=TRUE, results='asis'}
+xx(1:3)
+```
+
+```{r echo=TRUE, results='asis'}
+xx(t(1:3))
+```
+
+```{r echo=TRUE, results='asis'}
+xx(1)
+```
+
+
+##### Character 
+
+```{r echo=TRUE, results='asis'}
+xx("x=y")
+```
+
+```{r echo=TRUE, results='asis'}
+xx(letters[1:3])
+```
+
+```{r echo=TRUE, results='asis'}
+xx(t(letters[1:3]))
+```
+
+##### Logical
+
+```{r echo=TRUE, results='asis'}
+xx(T)
+```
+
+```{r echo=TRUE, results='asis'}
+xx(c(T,F))
+```
+
+```{r echo=TRUE, results='asis'}
+xx(t(c(T,F)))
+```
+
+### Transpose sign for xmt
+
+```{r echo=TRUE, results='asis'}
+xx(xmt(A))
+mat2tex_options(transpose.sign="^\\intercal")
+xx(xmt(A))
+```
+
+
+### Temporarily change options in xx
+
+```{r echo=TRUE, results='asis'}
+xx(A, A, digits=4)
+xx(xm(A, 4), A)
+```
+
+### Treating NAs
+
+```{r echo=TRUE, results='asis'}
+A[1,1] <- NA
+xx(A)
+xx(A, na="missing")
+mat2tex_options(na="-")
+xx(A)
+```
+
+
+
