@@ -180,8 +180,8 @@ xmt <- function(x, digits=NA, mtype=NA, round=NA, na=NA) {
 #' @keywords internal
 #' @method print texcode
 #'
-print.texcode <- function(x, autoenv=TRUE, ...) {
-  
+print.texcode <- function(x, autoenv=TRUE, ...) 
+{
   tex.string <- do.call(c, x)
   cat(tex.string)
 }
@@ -198,7 +198,7 @@ math_env_code <- function(e=1, begin=TRUE, label=NULL)
     e <- which(match.arg(e, all.es) == all.es)
   if (!is.null(label) & begin)
     label <- paste0("\\label{", label, "}")
-  es.b <- c(paste0(es, "\n"), 
+  es.b <- c(c("$$\n", "$"),                     # inline $ must not follow any whitespace
             paste0("\\begin{", es.be, "} ", label, "\n"))
   es.e <- c(paste0(es, "\n"), 
             paste0("\\end{", es.be, "}\n"))
@@ -281,7 +281,8 @@ xx <- function(..., e=NA, label=NULL, digits=NA, mtype=NA, round=NA, na=NA)
 #' @keywords internal
 #' @method Ops texcode
 #'
-Ops.texcode <- function(e1, e2) {
+Ops.texcode <- function(e1, e2) 
+{
   e1 <- as.texcode(e1)
   e2 <- as.texcode(e2)
   if (.Generic %in% c("+", "%%") 
@@ -290,7 +291,7 @@ Ops.texcode <- function(e1, e2) {
 	} else {
     NextMethod(.Generic)		
 	} 
-	res <- c(e1,e2)
+	res <- c(e1, e2)
 	class(res) <- class(e1)
 	res
 }
