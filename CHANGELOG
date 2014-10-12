@@ -3,6 +3,6 @@
 mat2tex 0.1.9001 (opened 2014-10-12) 
 ----------------------------------------------------------------
 
-* `print.texcode` automatically adds whitespace when printing chunks. This was necessary as.
+* `print.texcode` automatically adds whitespace when printing chunks. This was necessary as. This allows the proper use of the `$` environment in `.Rmd` files (Fix #12).
 
 
