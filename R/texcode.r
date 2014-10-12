@@ -1,3 +1,6 @@
+# REMINDER: The gap question is addressed in print.texcode !!
+
+
 # Goal: to put matrices into LaTex via Sweave.
 # The matrix options for LaTex.
 #
@@ -45,7 +48,7 @@ lex <- function(x) {
 }
 
 
-#' Create LaTeX code for several matrix types defined in amsmath.
+#' Create LaTeX code for several matrix types defined in the amsmath package.
 #' 
 #' @param   x       A matrix object.
 #' @param   mtype   LaTeX matrix type.
@@ -55,7 +58,7 @@ lex <- function(x) {
 latexcode_matrix <- function(x, mtype) 
 {
   l.env.begin <- paste0("\\begin{", mtype, "}\n")
-  l.env.end <- paste0("\\end{", mtype, "}\n")
+  l.env.end <- paste0("\\end{", mtype, "}")
   l.matrix <- apply(x, 1, function(x) 
     paste(paste(x, collapse=" & "), "\\\\ \n"))
   list(l.env.begin, l.matrix, l.env.end)
@@ -173,19 +176,117 @@ xmt <- function(x, digits=NA, mtype=NA, round=NA, na=NA) {
 }
 
 
+
+# print.texcode <- function(x, autoenv=TRUE, ...) 
+# {
+#   tex.string <- do.call(c, x)
+#   cat(tex.string)
+# }
+# TODO: auto-add standard envir if 
+
+
+# get list element by index
+# if index does not exist return empty character
+#
+get_list_element <- function(l, i) {
+  tryCatch( l[[i]], error = function(e) "")
+}
+
+# TODO :
+# See issues on github
+
+
+#' Add whitespace after single tex chunk.
+#' 
+#' The LaTeX commands need to be seperated by whitespaces or linebreaks.
+#' But after the $ evironment delimiter they are not allowed.
+#' The function:
+#' - adds a whitespace at the end of every chunk except
+#'  after chunks beginning or ending with $ 
+#' - adds no whitespace at the end of chunks followed by a chunk onyl 
+#' containing $
+#' 
+#' A cleaner approach would use objects that come along with the
+#' space to insert but that would mean reprogramming everything.
+#' 
+#' @param x texcode object.
+#' @export 
+#' @keywords internal
+#' @return A textcode object with whitespace added where needed.
+#' @examples 
+#' 
+#'  x <- "$" + lex(10) + lex("a") + "$\\n"
+#' 
+add_whitespaces_to_seperate_chunks <- function(x) {
+  # add whitespace at end of all non $ chunks
+  # but not to a chunk followed by $ chunk 
+  for (i in seq_along(x) ) {
+    l0 <- get_list_element(x, i)
+    l1 <- get_list_element(x, i + 1)   
+    l0 <- paste(l0, collapse=" ")                 # collapse if a list elements holds a vector with more than one element
+    l1 <- paste(l1, collapse=" ")
+    l0.crit <- !grepl("^[ ]*[$][ ]*$", l0)        # no $ at beginning of string (can be preceeded by whitespaces) 
+                                                  # and not followed by non-whitespaces
+    l1.crit <- !grepl("^\\s*[$][ ]*[\n]*$", l1)  # no $ or $\n at end of string and no non-whitespaces before
+    if (l0.crit & l1.crit ) {     
+      x[[i]] <- paste0(x[[i]], " ")
+    }   
+  }
+  x
+}
+
+## regex tests
+
+# regex0 <- "^[ ]*[$][ ]*$"
+# grepl(regex0, "$")      # be TRUE
+# grepl(regex0, " $")     # be TRUE
+# grepl(regex0, "$as")    # be FALSE
+
+# regex1 <- "^\\s*[$][ ]*[\n]*$"
+# grepl(regex1, "$")        # be TRUE
+# grepl(regex1, "$\n")     # be TRUE
+# grepl(regex1, "} $\n")   # be FALSE
+# grepl(regex1, "$  \n")   # be TRUE
+# grepl(regex1, "} $  \n") # be FALSE
+
+## add white space tests
+
+# opt <- mat2tex_options(digits=0)  
+# A <- matrix(c(0,1,-1,-1,1,-0), by=TRUE, 3)
+# x <- xx("\\B{A} = ", A, e=2)
+# str(x)
+# x <- "$" + xm(A) + "$"
+# add_whitespaces_to_seperate_chunks(x)
+
+# l <- math_env_code(e=2, begin=TRUE) %_% 
+#   A %_% math_env_code(e=2, begin=FALSE)
+# l <- add_whitespaces_to_seperate_chunks(l)
+# str(l)
+# l <- list("$", "1 + 1= 2", "$")
+# l <- list("$", c("4+6", "2+2"), "1 + 1= 2", "$")
+# add_whitespaces_to_seperate_chunks(l)
+# xx(M, e=2)
+
+
+
 #' Print method for objects of class \code{texcode}.
 #' 
 #' @param x    texcode object.
 #' @export 
 #' @keywords internal
 #' @method print texcode
-#'
+#' @details
+#' Function has been rewritten so no space is introduced by default
+#' between the single texcode chunks. This is necessary for 
+#' $ environment, which allows no whitespaces after and before 
+#' the environment delimiter $ in markdown.
+#' 
 print.texcode <- function(x, autoenv=TRUE, ...) 
 {
-  tex.string <- do.call(c, x)
-  cat(tex.string)
+  x <- add_whitespaces_to_seperate_chunks(x)  # add whitespace to seperate texcode chunk lines
+  tex.string <- do.call(c, x)   # convert list to string
+  cat(tex.string, sep="")       # no default seperator, required by $ environment
 }
-# TODO: auto-add standard envir if 
 
 
 math_env_code <- function(e=1, begin=TRUE, label=NULL) 
@@ -214,6 +315,7 @@ wrap_in_math_envir <- function(x, e=2, label=NULL)
   math_env_code(e=e, begin=TRUE, label=label) %_% 
     x %_% math_env_code(e=e, begin=FALSE)
 }
+# g <- wrap_in_math_envir(lex("1 + 1 = 2"))
 
 
 # TODO
@@ -369,7 +471,7 @@ xe <- function(e=1) {
 }
 
 
-#' "\%\_\%" operator to allow for easy combination of texcode objects 
+#' Operators to allow for easy combination of texcode objects 
 #' 
 #' @param x,y     \code{texcode} object, string or matrix.
 #' @rdname grapes-_-grapes.Rd
@@ -377,7 +479,7 @@ xe <- function(e=1) {
 #' @keywords internal
 #'
 `%_%` <-  function(x,y) {
-  # make sure function does not overwrite matrix %% matrix case
+  # no spaces between chunks
   as.texcode(x) + as.texcode(y)
 }
 
@@ -386,8 +488,86 @@ xe <- function(e=1) {
 #' @export
 #' 
 `%__%` <-  function(x,y) {
-  # make sure function does not overwrite matrix %% matrix case
+  # small space between chunks
   as.texcode(x) %_% as.texcode("\\;") %_% as.texcode(y)
+}
+
+
+#' @rdname grapes-_-grapes.Rd
+#' @export
+#' 
+`%_0%` <-  function(x,y) {
+  # small negative space
+  as.texcode(x) %_% as.texcode("\\!") %_% as.texcode(y)
+}
+
+
+#' @rdname grapes-_-grapes.Rd
+#' @export
+#' 
+`%_1%` <-  function(x,y) {
+  # thin space between chunks
+  as.texcode(x) %_% as.texcode("\\,") %_% as.texcode(y)
+}
+
+
+#' @rdname grapes-_-grapes.Rd
+#' @export
+#' 
+`%_2%` <-  function(x,y) {
+  # medium space between chunks 
+  as.texcode(x) %_% as.texcode("\\:") %_% as.texcode(y)
+}
+
+
+#' @rdname grapes-_-grapes.Rd
+#' @export
+#' 
+`%_3%` <-  function(x,y) {
+  # a thick space between chunks 
+  as.texcode(x) %_% as.texcode("\\;") %_% as.texcode(y)
+}
+
+
+#' @rdname grapes-_-grapes.Rd
+#' @export
+#' 
+`%_4%` <-  function(x,y) {
+  # space of width of letter M
+  as.texcode(x) %_% as.texcode("\\quad") %_% as.texcode(y)
+}
+
+
+#' @rdname grapes-_-grapes.Rd
+#' @export
+#' 
+`%_5%` <-  function(x,y) {
+  # two times space of widths of letter M
+  as.texcode(x) %_% as.texcode("\\qquad") %_% as.texcode(y)
+}
+
+
+#' Insert horizontal spaces in formula
+#' 
+#' The function is a wrapper around the
+#' LaTeX \code{\\mkern} command. It will produce
+#' horizintal spaces with a width given as multiples of the 
+#' letter \code{M}. E.g. \code{s(2)} equates the LaTeX code
+#' \code{\\mkern2em}.
+#' 
+#' @param em    Numeric. Width of inserted space in multiples 
+#'              of letter \code{M}. The default is \code{0}.
+#'              Negative spaces are allowed.
+#' @export
+#' @examples
+#' 
+#'  "$ 1 + 1 =" %_% s(2) %_% "2$"
+#'  xx("1+1=", s(2), "2")
+#'  
+s <- function(em=0)
+{
+  s.code <- paste0("\\mkern", em, "em")
+  as.texcode(s.code)
 }
 
 

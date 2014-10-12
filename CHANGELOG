@@ -1,0 +1,8 @@
+
+
+mat2tex 0.1.9001 (opened 2014-10-12) 
+----------------------------------------------------------------
+
+* `print.texcode` automatically adds whitespace when printing chunks. This was necessary as.
+
+

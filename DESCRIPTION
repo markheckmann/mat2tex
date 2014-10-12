@@ -1,6 +1,6 @@
 Package: mat2tex
 Title: Tools to combine R matrices and LaTeX code for use with knitr or sweave
-Version: 0.1
+Version: 0.1.9001
 Authors@R: "Mark Heckmann <heckmann@uni-bremen.de> [aut, cre]"
 Description: Helps you to inject R matrices in LaTeX code.
 Depends:
