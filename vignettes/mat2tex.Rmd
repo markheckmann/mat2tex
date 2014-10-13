@@ -2,6 +2,7 @@
 title: Inject R matrices into LaTeX formulas
 output: 
   html_document:
+    self_contained: true
     toc: true
     toc_level: 4
 ---
