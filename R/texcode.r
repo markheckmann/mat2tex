@@ -533,7 +533,7 @@ xe <- function(e=1) {
 #' @export
 #' 
 `%_4%` <-  function(x,y) {
-  # space of width of letter M
+  # space of width of letter m
   as.texcode(x) %_% as.texcode("\\quad") %_% as.texcode(y)
 }
 
@@ -542,7 +542,7 @@ xe <- function(e=1) {
 #' @export
 #' 
 `%_5%` <-  function(x,y) {
-  # two times space of widths of letter M
+  # two times space of widths of letter m
   as.texcode(x) %_% as.texcode("\\qquad") %_% as.texcode(y)
 }
 
@@ -552,7 +552,7 @@ xe <- function(e=1) {
 #' The function is a wrapper around the
 #' LaTeX \code{\\mkern} command. It will produce
 #' horizintal spaces with a width given as multiples of the 
-#' letter \code{M}. E.g. \code{s(2)} equates the LaTeX code
+#' letter \code{m}. E.g. \code{s(2)} equates the LaTeX code
 #' \code{\\mkern2em}.
 #' 
 #' @param em    Numeric. Width of inserted space in multiples 
@@ -566,7 +566,8 @@ xe <- function(e=1) {
 #'  
 s <- function(em=0)
 {
-  s.code <- paste0("\\mkern", em, "em")
+  mu <- 18 * em   # convert to mu units for \mkern in math mode (1em = 18um)
+  s.code <- paste0("\\mkern", mu, "mu")
   as.texcode(s.code)
 }
 

@@ -14,7 +14,7 @@ Negative spaces are allowed.}
 The function is a wrapper around the
 LaTeX \code{\\mkern} command. It will produce
 horizintal spaces with a width given as multiples of the
-letter \code{M}. E.g. \code{s(2)} equates the LaTeX code
+letter \code{m}. E.g. \code{s(2)} equates the LaTeX code
 \code{\\mkern2em}.
 }
 \examples{
