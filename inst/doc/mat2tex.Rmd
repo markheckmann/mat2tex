@@ -1,3 +1,11 @@
+---
+title: Inject R matrices into LaTeX formulas
+output: 
+  html_document:
+    toc: true
+    toc_level: 4
+---
+
 <!--
 %\VignetteEngine{knitr::rmarkdown}
 %\VignetteIndexEntry{Inject R matrices into LaTeX formulas}
@@ -6,6 +14,7 @@
 ```{r setup, include=FALSE}
 library(knitr)
 library(mat2tex)
+opts_chunk$set(comment=NA)
 #opts_chunk$set(out.extra='style="display:block; margin: auto"', fig.align="center")
 ```
 
@@ -15,23 +24,19 @@ mat2tex:::mat2tex_options_init()
 ```
 
 
-Inject R matrices into LaTeX formulas
-=======================================
+# Installation
 
-The **mat2tex** package was written to facilitate the combination of matrices and $\LaTeX$ code.
-
-### Installation
-
-To install the **mat2tex** package from github enter
+The **mat2tex** package was written to facilitate the combination of matrices and $\LaTeX$ code. To install the **mat2tex** package from github enter
 
 ```{r eval=FALSE}
 library(devtools)
-install_github("mat2tex", "markheckmann")
+install_github("markheckmann/mat2tex")
 ```
 
-into the console.
+into the console. Windows users have to make sure that `Rtools` are installed.
 
-### Introduction
+
+# Basic usage
 
 **mat2tex** is a mini-language with several operators and functions to allow to combine LaTeX code and R objects. Suppose you have the matrix `A`.
 
@@ -56,7 +61,7 @@ Using **mat2tex** you can achieve this very easily, by inserting the following c
 "$$ A = " %_% A %_% "$$"
 ```
 
-which is equivalent to
+or equivalently 
 
 ```{r echo=TRUE, results='asis'}
 xx("A =", A)
@@ -66,7 +71,7 @@ xx("A =", A)
 In the example above we used a string containing plain LaTeX code `"$$ \\mathbf{A} = "` and concatated it with the matrix `A` and another plain LaTeX chunk using the `%_%` operator. The operator can be used to concatenate chunks. Alternatively, you can use the `xx` function which will concatenate all the chunks given as arguments and seperated by comma automatically. The math environment we added by hand above (`$$`) is added automatically here.
 
 
-### Creating chunks using Functions and operators
+## Creating chunks using Functions and operators
 
 **mat2tex** is a mini-language consisting of functions to generate code chunks and several operators to combine the chunks. Most of the function names are acronymes starting with an `x` which stands for `TeX` or `LaTeX`.
 
@@ -80,24 +85,17 @@ function  | description
 `xx`    | A function that allows to enter all code chunks seperated by comma.
 `lp`    | Create left parenthesis
 `rp`    | Create right parenthesis
-
+`s`     | Insert custom width space into formula. 
 
 operator  | description
 ------------- | -------------
 `%_%`   | Concatenate LaTeX chunks.
-`%__%`  | Same as `%_%` but adds extra horizontal space.
+`%_1%`  | Same as `%_%` but adds extra horizontal space. The operator also is defined for numbers up to five with an increasing space, i.e. `%_2%`, `%_3%` etc.
 `+`     | Same as `%_%` but only applicabale if unambigous. Better use `%_%` to be on the safe side.
 
-### Examples
+## Examples
 
-The following codes begins a new math environment (`xb()`) and ends it again (`xb()`).
-The `e` argument specifies the type of environment we want. In the case we use the `$$` environment (`e=1`), which is the default. Inside we use the function `xm` to convert the matrix `A` into LaTeX codem in this case with `3` digits.
-
-```{r echo=TRUE, results='asis'}
-xb(e=1) %_% xm(A, digits=3) %_% xe(e=1)
-```
-
-The following code is identical to the one above, using plain text to specify the type of math environment. In order to convert the text into a chunk that can be concatenated, the function `xc` is used.
+The following codes begins a new math environment (`$$`) and ends it again (`$$`). In order to convert the text into a chunk that can be concatenated, the function `xc` is used. Inside we use the function `xm` to convert the matrix `A` into LaTeX codem in this case with `3` digits.
 
 ```{r echo=TRUE, results='asis'}
 xc("$$") %_% xm(A, 3) %_% xc("$$")
@@ -115,7 +113,7 @@ You can even omit the `xm` function. To convert the matrix into a LaTex code chu
 "$$" %_% A %_% "$$"
 ```
 
-An alternative formulation which is equivalent is to use the `xx` function to concatenate the code chunks. This function allows to enter the chunks seperated by commas. The nice feature is, that it automatically adds a math environment specified via the argument `e`.
+An alternative formulation which is equivalent is to use the `xx` function to concatenate the code chunks. This function allows to enter the chunks seperated by commas and will be the most convenient option in most cases. The nice feature is, that it automatically adds a math environment specified via the argument `e`.
 
 ```{r echo=TRUE, results='asis'}
 xx(xm(A, 2), e=1)
@@ -126,7 +124,6 @@ As `e=1` and `digits=2` is the default anyway, we can reduce this to
 ```{r echo=TRUE, results='asis'}
 xx(A)
 ```
-
 
 Let's explore more arguments. We can change the type of brackets that are produced using the `mtype` argument.
 
@@ -142,7 +139,16 @@ xx( xm(A, m="m"), xm(A, m="p"), xm(A, m="bm"),
 ```
 
 
-### More examples
+## Inline code
+
+`Rmarkdown` knows two environments: `$$` which we used above and the inline environment `$`. To include a formula inline like this 
+```{r echo=FALSE, results='asis'}
+xc("$") %_% xc("1 + 1 = 2")  %_% xc("$")
+```
+in the midth of a sentence, you can use the same `knitr` settings, i.e. `echo=FALSE` and `results='asis'`. But make sure there are no blank lines between the text and the `knitr` chunk, otherwise the code will not be inline.
+
+
+## More examples
 
 To construct a LaTeX expressions you can combine plain LaTeX text chunks, matrices and the output from several functions shown above to create more complex output. 
 
@@ -182,7 +188,7 @@ xx(pl(), "I - 11^T", pr(), "A", lb(),
 ```
 
 
-### Changing the default settings
+## Changing the default settings
 
 You can change several options that will affect the output.
 As default e.g. numeric values are rounded to two digits and round brackets 
@@ -220,22 +226,22 @@ xx(A)
 ```
 
 
-#### Working with **.Rmd** and **.Rnw** files
+# Working with **.Rmd** and **.Rnw** files
 
 It makes sense to change the default settings according to 
-file default math environment type you work with.
-Working with `.Rmd` files using `mathenviron=1` i.e. `$$` (which is the default) 
-is suitable. 
+the file type you work with. Working with `.Rmd` files using `mathenviron=1` i.e. `$$` (which is the default) is suitable. 
 
 ```{r eval=FALSE}
 mat2tex_options(mathenvir=1)
 ```
 
-For `.Rnw` you may want to change it to `mathenviron=3`, i.e. the `equation` environment.
+For `.Rnw` you may want to change it to `mathenviron=3`, i.e. to the `equation` environment to get numbered equations.
 
 ```{r eval=FALSE}
 mat2tex_options(mathenvir=3)
 ```
+
+Have a look at the `.Rnw` vignette for more information.
 
 
 

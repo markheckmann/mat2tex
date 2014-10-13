@@ -1,6 +1,7 @@
 ## ----setup, include=FALSE------------------------------------------------
 library(knitr)
 library(mat2tex)
+opts_chunk$set(comment=NA)
 #opts_chunk$set(out.extra='style="display:block; margin: auto"', fig.align="center")
 
 ## ----echo=FALSE----------------------------------------------------------
@@ -9,7 +10,7 @@ mat2tex:::mat2tex_options_init()
 
 ## ----eval=FALSE----------------------------------------------------------
 #  library(devtools)
-#  install_github("mat2tex", "markheckmann")
+#  install_github("markheckmann/mat2tex")
 
 ## ----results='hide'------------------------------------------------------
 set.seed(1)
@@ -20,9 +21,6 @@ A <- matrix(runif(4), 2)
 
 ## ----echo=TRUE, results='asis'-------------------------------------------
 xx("A =", A)
-
-## ----echo=TRUE, results='asis'-------------------------------------------
-xb(e=1) %_% xm(A, digits=3) %_% xe(e=1)
 
 ## ----echo=TRUE, results='asis'-------------------------------------------
 xc("$$") %_% xm(A, 3) %_% xc("$$")
@@ -45,6 +43,9 @@ xx(A)
 ## ----echo=TRUE, results='asis'-------------------------------------------
 xx( xm(A, m="m"), xm(A, m="p"), xm(A, m="bm"), 
     xm(A, m="B"), xm(A, m="v"), xm(A, m="V"))   
+
+## ----echo=FALSE, results='asis'------------------------------------------
+xc("$") %_% xc("1 + 1 = 2")  %_% xc("$")
 
 ## ----echo=TRUE, results='asis'-------------------------------------------
 d <- svd(A)
