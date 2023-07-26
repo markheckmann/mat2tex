@@ -410,11 +410,11 @@ Ops.texcode <- function(e1, e2)
 #'
 as.texcode <- function(x) 
 {
-  if (class(x) == "matrix")
+  if (inherits(x, "matrix"))
     x <- xm(x)
-  if (class(x) == "data.frame")
+  if (inherits(x, "data.frame"))
     x <- xm(as.matrix(x))
-  if (class(x) == "character" & length(x) == 1)  # only single string
+  if (inherits(x, "character") & length(x) == 1)  # only single string
     x <- lex(x)
   if (is.vector(x) & length(x) > 1)   # any vector length > 1
     x <- xm(as.matrix(x))
